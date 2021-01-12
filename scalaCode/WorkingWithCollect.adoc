@@ -18,10 +18,43 @@ val arrayStructData = Seq(
 )
 val arrayStructSchema = new StructType().add( "name", StringType ).add( "booksInterested", StringType )
 val df = spark.createDataFrame( spark.sparkContext.parallelize( arrayStructData ),arrayStructSchema )
-df.printSchema()
-df.show(false)
+scala> df.printSchema()
+root
+ |-- name: string (nullable = true)
+ |-- booksInterested: string (nullable = true)
+
+scala> df.show(false)
++----------+---------------+
+|name      |booksInterested|
++----------+---------------+
+|James     |Java           |
+|James     |C#             |
+|James     |Python         |
+|Michael   |Java           |
+|Michael   |PHP            |
+|Michael   |PHP            |
+|Robert    |Java           |
+|Robert    |Java           |
+|Robert    |Java           |
+|Washington|null           |
++----------+---------------+
+
 
 val df2 = df.groupBy("name").agg( collect_list( "booksInterested" ).as( "booksInterested" ) )
-df2.printSchema()
-df2.show(false)
+scala> df2.printSchema()
+root
+ |-- name: string (nullable = true)
+ |-- booksInterested: array (nullable = true)
+ |    |-- element: string (containsNull = true)
+
+scala> df2.show(false)
++----------+------------------+
+|name      |booksInterested   |
++----------+------------------+
+|James     |[Java, C#, Python]|
+|Washington|[]                |
+|Michael   |[Java, PHP, PHP]  |
+|Robert    |[Java, Java, Java]|
++----------+------------------+
+
 ----
