@@ -1,3 +1,7 @@
+https://sparkbyexamples.com/spark/spark-collect-list-and-collect-set-functions/
+:history
+
+----
 import org.apache.spark.sql.Row
 import org.apache.spark.sql.types.{StringType, StructField, StructType}
 val arrayStructData = Seq(
@@ -20,3 +24,4 @@ df.show(false)
 val df2 = df.groupBy("name").agg( collect_list( "booksInterested" ).as( "booksInterested" ) )
 df2.printSchema()
 df2.show(false)
+----
